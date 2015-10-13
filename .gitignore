@@ -1,0 +1,18 @@
+# Dotenv file
+.env
+
+# composer, npm
+/vendor
+/node_modules
+
+# vagrant
+/.vagrant
+
+# PHPStorm
+/.idea
+
+# OSX indexing
+.DS_Store
+
+# Gedit tmp files
+*~
