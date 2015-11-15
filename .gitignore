@@ -16,3 +16,4 @@
 
 # Gedit tmp files
 *~
+/nbproject/private/
