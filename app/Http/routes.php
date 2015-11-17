@@ -19,5 +19,5 @@ Route::resource('users','usersController', ['only' => ['index']]);
 
 Route::GET('movies','moviesController@see');
 
-/* No sé por qué no me deja POST, espero a ver cuándo metamos el $.POST*/ 
-Route::any('movies/{imbd_id}/{name}','moviesController@add');
+
+Route::POST('movies','moviesController@add');

@@ -14,7 +14,7 @@ class CreateMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->increments('id');
-            $table -> string ('imbd_id',255);
+            $table -> string ('imbd_id',255) -> unique();
             $table -> string ('name', 255);
         });
     }
