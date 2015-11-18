@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class usersController extends Controller
+class UsersController extends Controller
 {
     
     
     /*
-     * Devuelve todos los usuarios y las películas a las que están subscritos
+     * index () devuelve todos los usuarios y las películas a las que están subscritos
      */
     public function index()
     {
@@ -54,7 +54,86 @@ class usersController extends Controller
          
     }
 
+    
+    /*
+     * newSubscription() agrega un nuevo registro a user_movie
+     */
+    
+    public function newSubscription($userid) {
+        $movieId = $_POST["movie_id"];
+        $return = array ();
+        try {
+        \DB::table("user_movie")
+            -> insert ([
+                "user_id" => $userid,
+                "movie_id" => $movieId,
+                "status" => "n"
+                ]);
+            $return["success"] = true;
+        }  
+        catch (\Exception $e) {
+            $return["success"] = false;
+        }  
+        finally {
+            return \Response::json($return);
+        }       
+    }
+       
+    /*
+     * updateSubscription () actualiza el estado de la suscripción de un usuario a una película.
+     * Para poder hacer una solicitud a través de PUT creo el elemento $_POST["_method"] = "PUT"
+     * y lo envío usando POST.
+     */
+       
+    public function updateSubscription ($userid, $movieid) {
+        $new_status = $_POST["new_status"];
+        $return = array ();
+       if(
+               \DB:: table('user_movie') 
+               -> where ('user_id', $userid)
+               -> where ('movie_id', $movieid)
+               -> update (["status" => $new_status])         
+         )  {
+                 $return["success"] = true;
+               }
+       else {
+             $return["success"] = false;
+             }
+             
+            return \Response::json($return);
+       
+    }
+    
+    /*
+     * deleteSubscription() elimina un registro de user_movie.
+     * Para poder hacer una solicitud a través de DELETE creo el elemento $_POST["method"] = "DELETE"
+     * y lo envío usando POST.
+     */
+    
+    public function deleteSubscription ($userid, $movieid) {
+       $return = array ();
+       if (
+               \DB::table('user_movie')
+               -> where ('user_id', $userid)
+               -> where ('movie_id', $movieid)
+               -> delete()
+               
+          ){
+            $return["success"] = true;
+          }
+        else {
+             $return["success"] = false;
+        }
+        return \Response::json($return);
+    }
+
 }
+
+
+
+
+
+
         
 
 
@@ -66,44 +145,3 @@ class usersController extends Controller
 
 
 
-
-
-
-/*
-       // Devuelve un stdClass 
-        $consulta = \DB::table('users')
-                -> leftJoin ('user_movie', 'users.id','=','user_movie.user_id')
-                -> leftJoin ('movies', 'movies.id' , '=', 'user_movie.movie_id')
-                -> select ('users.id AS id_usuario','users.username','users.password','movies.id AS id_pelicula','movies.imbd_id','movies.name')
-                -> get();
-    
-      // Lo convierto en un array
-      $consulta = json_decode(json_encode($consulta), true);
-      
-      // Creo un array donde se guardarán todos los usuarios
-      $usuarios = array ();
-      
-      // Comprobamos que funciona
-      echo $consulta[0]["id_usuario"];
-      */
-
-
-    
-        /*
-        
-            
-            Debo implementar: SELECT movies.id as id_pelicula, movies.name, movies.imbd_id, user_movie.status 
-             * from movies, user_movie 
-             * where movies.id = user_movie.movie_id and user_movie.user_id=1;
-                 
-         * // Esto lo devuelve, sólo debo cambiar el 1 por el usuario['id'] y convertir la respuesta en un array, y guardarlo en un nuevo índice 'peliculas'
-         *         $peliculas = \DB::table('movies')
-        -> Join ('user_movie', 'movies.id', '=','user_movie.movie_id')
-        -> Where ('user_movie.user_id', '=', 1)
-        -> select ('movies.id as id_pelicula', 'movies.imbd_id', 'movies.name', 'user_movie.status')
-        -> get();  
-         *     return $peliculas;   
-        }
-         * 
-         * 
-        */
