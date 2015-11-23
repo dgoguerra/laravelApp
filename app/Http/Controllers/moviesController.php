@@ -40,8 +40,8 @@ class MoviesController extends Controller
     public function newMovie()
     {
        //Ya veremos cómo, recibo estas dos variables
-       $imbd = $_POST["imbd_id"];
-       $name = $_POST["name"];
+       $imbd = $_POST["imbdid"];
+       $name = $_POST["nombre"];
        $return = array ();
        
        //Compruebo que no se hayan introducido campos vacíos

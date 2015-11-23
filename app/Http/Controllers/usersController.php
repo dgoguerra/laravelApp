@@ -34,24 +34,18 @@ class UsersController extends Controller
         $users["users"] = $usuarios;
         
         foreach ($usuarios as $clave => $usuario) {
-         // Obtengo las películas a las que está subscrito cada usuario
+            // Obtengo las películas a las que está subscrito cada usuario
             $peliculas = \DB::table('movies')
            -> Join ('user_movie', 'movies.id', '=','user_movie.movie_id')
            -> Where ('user_movie.user_id', '=', $usuario['id'])
            -> select ('movies.id as id_pelicula', 'movies.imbd_id', 'movies.name', 'user_movie.status')
            -> get();  
-            
-         // Las convierto en un array
+            // Las convierto en un array
             $peliculas = json_decode(json_encode($peliculas),true);
-            
             // Lo agrego a su posición en $users
             $users["users"][$clave]["peliculas"] = $peliculas;
-        }
-        
-
+        }        
         return \Response::json($users);
-        
-         
     }
 
     
@@ -60,7 +54,7 @@ class UsersController extends Controller
      */
     
     public function newSubscription($userid) {
-        $movieId = $_POST["movie_id"];
+        $movieId = $_POST["movieid"];
         $return = array ();
         try {
         \DB::table("user_movie")
@@ -86,14 +80,17 @@ class UsersController extends Controller
      */
        
     public function updateSubscription ($userid, $movieid) {
-        $new_status = $_POST["new_status"];
+        $new_status = $_POST["newStatus"];
         $return = array ();
-       if(
-               \DB:: table('user_movie') 
-               -> where ('user_id', $userid)
-               -> where ('movie_id', $movieid)
-               -> update (["status" => $new_status])         
-         )  {
+        if (
+                (preg_match("/^[snp]/i", $new_status)) &&
+                (
+                   \DB:: table('user_movie') 
+                   -> where ('user_id', $userid)
+                   -> where ('movie_id', $movieid)
+                   -> update (["status" => $new_status])         
+                ) 
+            ) {
                  $return["success"] = true;
                }
        else {
