@@ -1,3 +1,4 @@
+        
 /*
  * Asigno el método correspondiente para cada botón (index para los de visualizar el contenido y alterDb para los de modificar la BD)
  * y le paso como parámetros la dirección de destino (target), el botón pulsado (button), los campos de formulario, los campos de los input
@@ -128,9 +129,6 @@ function Index(event) {
             });
 
             //Recorro el array con los datos generando una tabla usando las claves y valores de cada elemento.
-            // Antes creo una variable contadorPelicula que generará dinámicamente un ID distinto para cada celda que contendrá
-            //La imagen y el argumento de cada película. De este modo podemos cargar asincrónicamente la imagen y el argumento
-            //modificando la propiedad .innerHTML de un elemento ya creado e indentificado en el DOM. 
              var contadorPelicula = 0;
         $.each(data, function (key, val) {
                
@@ -148,8 +146,7 @@ function Index(event) {
                                 tableData += "<tr><td class='key'>" + propertyKey + "</td><td>" + propertyVal + "</td></tr>";
                                 
                             });
-                        //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila para el poster y otra para el argumento
-                        // Sus id se generan dinámicamente y son únicos para cada película de cada usuario. El valor de la celda es el resultado de la función consultarIMBD
+                        //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila
                         tableData+= "<tr> <td class='key'> Imagen </td> <td ID='imagen"+contadorPelicula+"'>"+ consultarIMBD("imagen",imbdID, contadorPelicula)+"</td>";
                         tableData+= "<tr> <td class='key'> Argumento </td> <td ID='argumento"+contadorPelicula+"'>"+consultarIMBD("argumento",imbdID, contadorPelicula)+"</td>";
                         contadorPelicula++;
@@ -168,10 +165,7 @@ function Index(event) {
         });
     }
 }
-/**
- * ConsultarIMBD() recibe como primer argumento sobre qué celda se está trabajando (la del poster o la del argumento),
- * como segundo argumento el id de la película en IMBDID, y como tercer argumento el ID de la celda sobre la que se trabaja. 
- */
+
 function consultarIMBD(opcion, imbdID, contadorPelicula) {
 
     if (opcion == "imagen") {
