@@ -1,4 +1,4 @@
-
+        
 /*
  * Asigno el método correspondiente para cada botón (index para los de visualizar el contenido y alterDb para los de modificar la BD)
  * y le paso como parámetros la dirección de destino (target), el botón pulsado (button), los campos de formulario, los campos de los input
@@ -129,7 +129,9 @@ function Index(event) {
             });
 
             //Recorro el array con los datos generando una tabla usando las claves y valores de cada elemento.
-            $.each(data, function (key, val) {
+             var contadorPelicula = 0;
+        $.each(data, function (key, val) {
+               
                 var tableData = "<table class='table-striped'>";
                 tableData += "<tr  class='headerTd'> <th colspan='2'>" + event.data.type + " " + (key + 1) + " </th> </tr>";
                 $.each(val, function (propertyKey, propertyVal) {
@@ -137,13 +139,19 @@ function Index(event) {
                     if ($.isArray(propertyVal)) {
                         $.each(propertyVal, function (level2Key, level2Val) {
                             tableData += "<tr> <th colspan='2'> Película " + (level2Key + 1) + " </th> </tr>";
+                            // Preparo una variable para guardar el IMBD_ID que va a necesitar el método consultarIMBD
+                            var imbdID = "";
                             $.each(level2Val, function (propertyKey, propertyVal) {
+                                (propertyKey == "imbd_id")?imbdID=propertyVal:"";
                                 tableData += "<tr><td class='key'>" + propertyKey + "</td><td>" + propertyVal + "</td></tr>";
+                                
                             });
-                        });
                         //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila
-                        tableData+= "<tr> <td class='key'> Imagen </td> <td> AQUÍ VA LA IMAGEN </td>";
-                        tableData+= "<tr> <td class='key'> Argumento </td> <td> AQUÍ VA LA SINOPSIS</td>";
+                        tableData+= "<tr> <td class='key'> Imagen </td> <td ID='imagen"+contadorPelicula+"'>"+ consultarIMBD("imagen",imbdID, contadorPelicula)+"</td>";
+                        tableData+= "<tr> <td class='key'> Argumento </td> <td ID='argumento"+contadorPelicula+"'>"+consultarIMBD("argumento",imbdID, contadorPelicula)+"</td>";
+                        contadorPelicula++;
+                        });
+
                     }
                     // Si el elemento no es un array, registro su valor en una fila.
                     else {
@@ -157,6 +165,27 @@ function Index(event) {
         });
     }
 }
+
+function consultarIMBD(opcion, imbdID, contadorPelicula) {
+
+    if (opcion == "imagen") {
+        $.get("http://www.omdbapi.com/?i="+imbdID+"&plot=short&r=json", function (jsonResponse) {
+          var poster =  jsonResponse.Poster;
+         //La cuestión es cómo lo visualizamos si es asíncrono y no podemos hacer un return...:
+          document.getElementById("imagen"+contadorPelicula).innerHTML = "<img src='"+poster+"'/>";
+
+
+        });
+    }
+    if (opcion == "argumento") {
+        $.get("http://www.omdbapi.com/?i="+imbdID+"&plot=short&r=json", function (jsonResponse) {
+          var argumento =  jsonResponse.Plot;
+         //La cuestión es cómo lo visualizamos si es asíncrono y no podemos hacer un return...:
+          document.getElementById("argumento"+contadorPelicula).innerHTML = argumento;
+        });
+    }
+}
+
 
 
 
@@ -292,4 +321,4 @@ function process(target) {
     // Impido que se envíe el formulario vía HTTP.
     return false;
 }
-        
+       

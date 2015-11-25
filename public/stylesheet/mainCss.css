@@ -1,3 +1,4 @@
+             
             
 /*Añado unos márgenes al contenedor del documento ya que bootstrap los quita */
 div#wrapper {
@@ -52,4 +53,9 @@ div#resultados tr.headerTd {
     color: white;
     background-color: black;
 }
+/*Modifico el tamaño de los carteles de películas */
+td img {
+    height: 150px;
+}
+      
             
