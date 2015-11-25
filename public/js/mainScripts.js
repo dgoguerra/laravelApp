@@ -141,6 +141,9 @@ function Index(event) {
                                 tableData += "<tr><td class='key'>" + propertyKey + "</td><td>" + propertyVal + "</td></tr>";
                             });
                         });
+                        //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila
+                        tableData+= "<tr> <td class='key'> Imagen </td> <td> AQUÍ VA LA IMAGEN </td>";
+                        tableData+= "<tr> <td class='key'> Argumento </td> <td> AQUÍ VA LA SINOPSIS</td>";
                     }
                     // Si el elemento no es un array, registro su valor en una fila.
                     else {
