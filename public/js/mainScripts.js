@@ -1,4 +1,3 @@
-
 /*
  * Asigno el método correspondiente para cada botón (index para los de visualizar el contenido y alterDb para los de modificar la BD)
  * y le paso como parámetros la dirección de destino (target), el botón pulsado (button), los campos de formulario, los campos de los input
@@ -129,16 +128,12 @@ function Index(event) {
             });
 
             //Recorro el array con los datos generando una tabla usando las claves y valores de cada elemento.
-<<<<<<< HEAD
             // Antes creo una variable contadorPelicula que generará dinámicamente un ID distinto para cada celda que contendrá
             //La imagen y el argumento de cada película. De este modo podemos cargar asincrónicamente la imagen y el argumento
             //modificando la propiedad .innerHTML de un elemento ya creado e indentificado en el DOM. 
              var contadorPelicula = 0;
         $.each(data, function (key, val) {
                
-=======
-            $.each(data, function (key, val) {
->>>>>>> parent of 5062e91... Movido JS a archivo JS y estilos a archivo CSS
                 var tableData = "<table class='table-striped'>";
                 tableData += "<tr  class='headerTd'> <th colspan='2'>" + event.data.type + " " + (key + 1) + " </th> </tr>";
                 $.each(val, function (propertyKey, propertyVal) {
@@ -146,21 +141,20 @@ function Index(event) {
                     if ($.isArray(propertyVal)) {
                         $.each(propertyVal, function (level2Key, level2Val) {
                             tableData += "<tr> <th colspan='2'> Película " + (level2Key + 1) + " </th> </tr>";
+                            // Preparo una variable para guardar el IMBD_ID que va a necesitar el método consultarIMBD
+                            var imbdID = "";
                             $.each(level2Val, function (propertyKey, propertyVal) {
+                                (propertyKey == "imbd_id")?imbdID=propertyVal:"";
                                 tableData += "<tr><td class='key'>" + propertyKey + "</td><td>" + propertyVal + "</td></tr>";
+                                
                             });
-<<<<<<< HEAD
                         //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila para el poster y otra para el argumento
                         // Sus id se generan dinámicamente y son únicos para cada película de cada usuario. El valor de la celda es el resultado de la función consultarIMBD
                         tableData+= "<tr> <td class='key'> Imagen </td> <td ID='imagen"+contadorPelicula+"'>"+ consultarIMBD("imagen",imbdID, contadorPelicula)+"</td>";
                         tableData+= "<tr> <td class='key'> Argumento </td> <td ID='argumento"+contadorPelicula+"'>"+consultarIMBD("argumento",imbdID, contadorPelicula)+"</td>";
                         contadorPelicula++;
-=======
->>>>>>> parent of 5062e91... Movido JS a archivo JS y estilos a archivo CSS
                         });
-                        //Después de haber insertado todos los campos que recibí del controlador, creo una nueva fila
-                        tableData+= "<tr> <td class='key'> Imagen </td> <td> AQUÍ VA LA IMAGEN </td>";
-                        tableData+= "<tr> <td class='key'> Argumento </td> <td> AQUÍ VA LA SINOPSIS</td>";
+
                     }
                     // Si el elemento no es un array, registro su valor en una fila.
                     else {
@@ -174,7 +168,6 @@ function Index(event) {
         });
     }
 }
-<<<<<<< HEAD
 /**
  * ConsultarIMBD() recibe como primer argumento sobre qué celda se está trabajando (la del poster o la del argumento),
  * como segundo argumento el id de la película en IMBDID, y como tercer argumento el ID de la celda sobre la que se trabaja. 
@@ -199,8 +192,6 @@ function consultarIMBD(opcion, imbdID, contadorPelicula) {
     }
 }
 
-=======
->>>>>>> parent of 5062e91... Movido JS a archivo JS y estilos a archivo CSS
 
 
 
@@ -336,4 +327,3 @@ function process(target) {
     // Impido que se envíe el formulario vía HTTP.
     return false;
 }
-        
