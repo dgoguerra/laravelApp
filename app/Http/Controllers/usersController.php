@@ -80,7 +80,7 @@ class UsersController extends Controller
      */
        
     public function updateSubscription ($userid, $movieid) {
-        $new_status = $_POST["newStatus"];
+        $new_status = \Input::get("newStatus");
         $return = array ();
         if (
                 (preg_match("/^[snp]/i", $new_status)) &&
